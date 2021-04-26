@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My first chatbot in beta version</title>
+    <style>
+        body{
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #main{
+            display: grid;
+            grid-template-columns: 20% 10% 20%;
+            grid-template-rows: 10%;
+            grid-gap: 15%;
+            justify-content: center;
+        }
+/* 
+        #button {
+            text-align: center;
+        } */
+
+
+        #chat{
+            display: flex;
+            width: 80%;
+            justify-content: center;
+            margin-left: 180px;
+           
+
+        }
+
+        /* #user-chat {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+           
+        } */
+
+
+        #user-chat > h2 {
+            background-color: purple;
+            color: white;
+            width: 500px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        #user-chat > h3 {
+            background-color: blue;
+            color: white;
+            width: 500px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+   <h1>Talk With My Chatbot</h1>
+   <div id="main">
+       <div id="user">
+           <img src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png" width="200">
+          
+       </div>
+      
+       <div id="button"> <img src="https://cdn1.iconfinder.com/data/icons/business-sets/512/612394-mic-512.png" width="100">  </div>
+
+       <div id="bot">
+           <img src="https://www.internetandtechnologylaw.com/files/2019/06/iStock-872962368-chat-bots.jpg" width="200">
+           
+           
+       </div>
+   </div>
+
+<!-- <hr style="clear: both;"> -->
+
+   <div id="chat">
+    <div id="user-chat"></div>
+    
+   </div>
+   
+
+
+   
+
+    <script>
+
+
+        let intro = ['I am Shady', 'my name is Shady', 'I am your assistant how can i help you']
+        
+        let owner = ['Mr Anwar Shad','Anwar Shad.  he is learning full stack web development at Masai School']
+        let poem = ['Twinkle Twinkle little star how i wonder what you are up above the world so high like a diamond in the sky','johny johny yes papa eating sugar no papa telling lie no papa open your mouth hahaha']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      let chat = document.getElementById('chat')
+      let main_div = document.getElementById('main')
+      let user_div = document.getElementById('user-chat')
+        const mic = document.getElementById('button')
+        let speech = window.SpeechRecognition || window.webkitSpeechRecognition
+        let recognition = new speech()
+
+
+        function showUsermsg(usermsg){
+           let h2 = document.createElement('h2')
+                h2.textContent=usermsg
+                user_div.append(h2)
+            return user_div;
+        }
+
+        function showBotmsg(botmsg){
+           let h3 = document.createElement('h3')
+                h3.textContent=botmsg
+               user_div.append(h3)
+            return user_div;
+        }
+
+
+        
+        function chatbotVoice (message){
+          let robo_speech = new SpeechSynthesisUtterance()
+            robo_speech.text = 'sorry i do not know'
+            if(message.includes('hi')){
+                robo_speech.text = 'hello how can i help you'
+            }
+            if(message.includes('who are you')) {
+                let res = intro[Math.ceil(Math.random() * intro.length)-1]
+                robo_speech.text = res
+            }
+            if(message.includes('what is masai school')){
+                robo_speech.text = 'Masai School is a twenty first century outcome driven school where you have to pay only when you get a job of 5 lakh and above'
+            }
+            if(message.includes('who is your owner')){
+                robo_speech.text = owner[Math.ceil(Math.random() * owner.length)-1]
+            }
+            if(message.includes('how are you')){
+                robo_speech.text = 'I am fine what about you'
+            }
+            if(message.includes('sing a poem')){
+                robo_speech.text = poem[Math.ceil(Math.random() * poem.length)-1]
+            }
+
+
+            window.speechSynthesis.speak(robo_speech)
+            chat.append(showBotmsg(robo_speech.text))
+        }
+
+        recognition.onresult = function(e){
+            // console.log(e)
+            let response = e.results[0][0].transcript;
+            console.log(response)
+            chat.append(showUsermsg(response))
+            chatbotVoice(response)
+            
+        }
+
+
+        mic.addEventListener('click',function(){
+            console.log('Activated')
+            document.getElementById('button').style.opacity='0.8'
+            recognition.start()
+        })
+
+    </script>
+</body>
+
+</html>
